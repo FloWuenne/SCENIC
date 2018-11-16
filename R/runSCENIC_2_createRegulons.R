@@ -16,7 +16,8 @@
 #' 
 #' runSCENIC_2_createRegulons(scenicOptions)
 #' @export
-runSCENIC_2_createRegulons <- function(scenicOptions)
+runSCENIC_2_createRegulons <- function(scenicOptions,
+                                      aucMaxrank_thresh = 0.1)
 {
   tfModules_asDF <- loadInt(scenicOptions, "tfModules_asDF")
   nCores <- getSettings(scenicOptions, "nCores")
@@ -92,7 +93,7 @@ runSCENIC_2_createRegulons <- function(scenicOptions)
 
   motifs_AUC <- lapply(motifRankings, function(ranking) {
     message("Scoring database: ", ranking@description)
-    RcisTarget::calcAUC(tfModules, ranking, aucMaxRank=0.03*getNumColsInDB(ranking), nCores=nCores, verbose=FALSE)})
+    RcisTarget::calcAUC(tfModules, ranking, aucMaxRank=aucMaxrank_thresh*getNumColsInDB(ranking), nCores=nCores, verbose=FALSE)})
   saveRDS(motifs_AUC, file=getIntName(scenicOptions, "motifs_AUC"))
   
   ### 1.2 Convert to table, filter by NES & add the TFs to which the motif is annotated
