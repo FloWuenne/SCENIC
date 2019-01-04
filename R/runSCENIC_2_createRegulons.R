@@ -90,9 +90,11 @@ runSCENIC_2_createRegulons <- function(scenicOptions)
   msg <- paste0(format(Sys.time(), "%H:%M"), "\tRcisTarget: Calculating AUC")
   if(getSettings(scenicOptions, "verbose")) message(msg)
 
+  ## Manually edited the aucMaxRank used in the RcisTarget function to use the top 5% of genes to calculate enrichment of motifs
+  ## default is 0.03 (3%) , changed by FW
   motifs_AUC <- lapply(motifRankings, function(ranking) {
     message("Scoring database: ", ranking@description)
-    RcisTarget::calcAUC(tfModules, ranking, aucMaxRank=0.03*getNumColsInDB(ranking), nCores=nCores, verbose=FALSE)})
+    RcisTarget::calcAUC(tfModules, ranking, aucMaxRank=0.05*getNumColsInDB(ranking), nCores=nCores, verbose=FALSE)})
   saveRDS(motifs_AUC, file=getIntName(scenicOptions, "motifs_AUC"))
   
   ### 1.2 Convert to table, filter by NES & add the TFs to which the motif is annotated
