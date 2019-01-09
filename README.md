@@ -4,7 +4,7 @@
 
 ```
 library(devtools)
-devtools::install_github(FloWuenne/SCENIC)
+devtools::install_github("FloWuenne/SCENIC")
 ```
 
 SCENIC is an R package to infer Gene Regulatory Networks and cell types from single-cell RNA-seq data. 
